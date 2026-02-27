@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Inference Proxy</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <h1>Inference Proxy</h1>
+  <textarea id="message" placeholder="Enter your message..."></textarea>
+  <div class="controls">
+    <select id="model">
+      <option value="haiku">Haiku (fast, cheap)</option>
+      <option value="sonnet">Sonnet (smarter)</option>
+    </select>
+    <button id="send">Send</button>
+  </div>
+  <div id="output"></div>
+  <div id="cost"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
