@@ -1,2 +1,2 @@
-# python-job-queue-service
-Practice repo building a Job Queue Service in Python.
+# inference-proxy
+Practice repo learning inference proxy with assist from Claude Code.
