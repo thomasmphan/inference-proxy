@@ -1,4 +1,5 @@
 import logging
+import os
 import time
 
 from anthropic import APIError, Anthropic
@@ -20,6 +21,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 client = Anthropic()
 
 
+MAX_TOKENS = int(os.getenv("MAX_TOKENS", "1024"))
+DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "haiku")
+
 MODELS = {
     "haiku": "claude-haiku-4-5-20251001",
     "sonnet": "claude-sonnet-4-6",
@@ -37,7 +41,7 @@ cache = {}
 
 class ChatRequest(BaseModel):
     message: str
-    model: str = "haiku"
+    model: str = DEFAULT_MODEL
 
 
 def calculate_cost(model_id: str, usage: Usage) -> float:
@@ -79,7 +83,7 @@ def chat_stream(request: ChatRequest) -> StreamingResponse:
         try:
             with client.messages.stream(
                 model=model_id,
-                max_tokens=1024,
+                max_tokens=MAX_TOKENS,
                 messages=[{"role": "user", "content": request.message}],
             ) as stream:
                 for text in stream.text_stream:
@@ -130,7 +134,7 @@ def chat(request: ChatRequest) -> dict:
     try:
         response = client.messages.create(
             model=model_id,
-            max_tokens=1024,
+            max_tokens=MAX_TOKENS,
             messages=[{"role": "user", "content": request.message}],
         )
         cache[(request.message, model_id)] = response.content[0].text
